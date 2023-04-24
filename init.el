@@ -78,11 +78,43 @@
 
 (use-package elixir-mode)
 
+;; Alchemist
+(use-package alchemist
+  :ensure t
+  :hook (elixir-mode . alchemist-mode))
+
+;; Mix
+(use-package mix
+  :ensure t
+  :hook (elixir-mode . mix-minor-mode))
+
+
 ;; Themes related packages
 (use-package doom-themes)
 (load-theme 'doom-tokyo-night)
 
 ;; git related plugins
 (use-package magit)
+(use-package git-gutter+)
+(global-git-gutter+-mode)
+(use-package diff-hl)
 
+;; projects related packages
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode 1)
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
+
+;; treemacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :bind
+  (("C-c o p" . treemacs)))
+
+;; all the icons
+(use-package all-the-icons)
+(require 'all-the-icons)
 
