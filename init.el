@@ -4,10 +4,15 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(set-frame-font "Iosevka 15" nil t)
 (setq-default cursor-type 'bar)
 
+(set-frame-font "Iosevka-15" nil t)
+
+(add-hook 'treemacs-mode-hook (lambda () (display-line-numbers-mode 0)))
+
 (global-hl-line-mode t)
+
+(global-display-line-numbers-mode 1)
 
 (setq make-backup-files nil
       auto-save-default t)
@@ -15,6 +20,9 @@
 (setq-default indent-tabs-mode nil)
 
 (setq straight-use-package-by-default t)
+
+;; keybinds
+(global-set-key (kbd "C-c c d") 'lsp-find-definition)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -39,7 +47,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("60ada0ff6b91687f1a04cc17ad04119e59a7542644c7c59fc135909499400ab8" default))
+   '("636b135e4b7c86ac41375da39ade929e2bd6439de8901f53f88fde7dd5ac3561" "60ada0ff6b91687f1a04cc17ad04119e59a7542644c7c59fc135909499400ab8" default))
  '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -88,10 +96,20 @@
   :ensure t
   :hook (elixir-mode . mix-minor-mode))
 
+(use-package indent-guide
+  :ensure t
+  :hook (elixir-mode . indent-guide-mode)
+  :config
+  (setq indent-guide-char "│"))
+
+(use-package ruby-end
+  :ensure t
+  :hook (elixir-mode . ruby-end-mode))
 
 ;; Themes related packages
 (use-package doom-themes)
-(load-theme 'doom-tokyo-night)
+;;(load-theme 'doom-tokyo-night)
+(load-theme 'modus-vivendi)
 
 ;; git related plugins
 (use-package magit)
@@ -116,5 +134,35 @@
 
 ;; all the icons
 (use-package all-the-icons)
-(require 'all-the-icons)
+;;(require 'all-the-icons)
+;;(use-package treemacs-all-the-icons
+;;  :after (treemacs all-the-icons)
+;;  :config
+;;  (treemacs-load-theme 'all-the-icons))
 
+;;(require 'treemacs-all-the-icons)
+;;(treemacs-load-theme 'all-the-icons)
+
+;; modeline settings
+(use-package doom-modeline)
+(doom-modeline-mode 1)
+
+;; dired enchantments
+(use-package dired+)
+;;(use-package all-the-icons-dired
+;;  :ensure t
+;;  :hook (dired-mode . all-the-icons-dired-mode))
+
+;; tree-sitter packages
+(use-package tree-sitter
+  :ensure t
+  :hook ((elixir-mode js-mode) . tree-sitter-mode)
+  :config
+  (require 'tree-sitter-langs))
+
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
+
+;; whiteroom mode
+(use-package writeroom-mode)
