@@ -48,6 +48,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("636b135e4b7c86ac41375da39ade929e2bd6439de8901f53f88fde7dd5ac3561" "60ada0ff6b91687f1a04cc17ad04119e59a7542644c7c59fc135909499400ab8" default))
+ '(warning-suppress-log-types '((comp) (comp)))
  '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -79,6 +80,14 @@
 (use-package vertico
   :init
   (vertico-mode))
+
+(use-package orderless
+  :config
+  (setq completion-styles '(orderless)
+        completion-category-overrides '((file (styles partial-completion)))))
+
+(require 'orderless)
+(setq completion-styles '(orderless))
 
 (use-package savehist
   :init
@@ -125,6 +134,17 @@
   :bind-keymap
   ("C-c p" . projectile-command-map))
 
+(with-eval-after-load 'projectile
+  (define-key projectile-mode-map (kbd "C-c p f") 'projectile-find-file))
+
+(use-package rg)
+(require 'rg)
+
+(use-package consult
+  :ensure t
+  :bind (:map projectile-mode-map
+              ("C-c p s" . consult-ripgrep-in-current-project)))
+
 ;; treemacs
 (use-package treemacs
   :ensure t
@@ -149,7 +169,7 @@
 
 ;; dired enchantments
 (use-package dired+)
-;;(use-package all-the-icons-dired
+;;(use-package all-the-icons-dirdce
 ;;  :ensure t
 ;;  :hook (dired-mode . all-the-icons-dired-mode))
 
@@ -166,3 +186,10 @@
 
 ;; whiteroom mode
 (use-package writeroom-mode)
+
+;; nix files editing mode
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
+;; lua related plugins
+(use-package lua-mode)
